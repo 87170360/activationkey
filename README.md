@@ -1,0 +1,4 @@
+activationkey
+=============
+
+create activationkey
