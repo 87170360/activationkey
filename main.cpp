@@ -11,31 +11,26 @@ Description:产生激活码
 #include <time.h>
 
 #include "randomkey.h"
-#include "readfile.h"
 
 using namespace std;
 const UINT32 MAX_BUFF_SIZE(1024);
 
-
-int main(int argc, char* argv[])
-{
-	ReadDataFromFileWBW(); //逐词读入字符串 
-    OutPutAnEmptyLine(); //输出空行
-
-    ReadDataFromFileLBLIntoCharArray(); //逐词读入字符数组
-    OutPutAnEmptyLine(); //输出空行
-
-    ReadDataFromFileLBLIntoString(); //逐词读入字符串
-    OutPutAnEmptyLine(); //输出空行
-
-    ReadDataWithErrChecking(); //带检测的读取
-    return 0;
-}
-
-
 /*
 int main(int argc, char* argv[])
 {
+	std::vector<ReadData> m_config;
+	m_config = parseInputFile();
+    return 0;
+}
+*/
+
+
+int main(int argc, char* argv[])
+{
+	std::vector<ReadData> m_config;
+	m_config = parseInputFile();
+	assert(m_config.size());
+	
 	char buff[MAX_BUFF_SIZE] = {0};
 	//格式 时间-序号mix-max.csv
 
@@ -45,8 +40,8 @@ int main(int argc, char* argv[])
 	time(&rawtime);
 	localtime_s(&timeinfo, &rawtime);
 	sprintf_s(namebuff, 120, "%lu-%lu@%d%02d%02d%02d%02d%02d.csv",
-		KEY_BEGIN, 
-		KEY_END,
+		m_config.begin()->config[0], 
+		m_config.back().config[1],
 		timeinfo.tm_year + 1900,
 		timeinfo.tm_mon,
 		timeinfo.tm_mday,
@@ -55,7 +50,8 @@ int main(int argc, char* argv[])
 		timeinfo.tm_sec);
 	ofstream of(namebuff, ofstream::binary);
 
-	initGiftID();
+
+	initGiftID(m_config);
 
 	string strTmp;
 	strTmp.clear();
@@ -65,34 +61,35 @@ int main(int argc, char* argv[])
 
 	char buffidx[120] = {0};
 	memset(buffidx, 0, 120);
-	for (UINT32 i = KEY_BEGIN; i <= KEY_END; ++i)
+	for(std::vector<ReadData>::const_iterator iter = m_config.begin(); iter != m_config.end(); ++iter)
 	{
-		strTmp.clear();
-		memset(buffidx, 0, 120);
-		sprintf_s(buffidx, 120, "%07lu,", i);
-		strTmp.append(buffidx, 8);
-		sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
-		of.write(buff, strTmp.size());
+		for (UINT32 i = iter->config[0]; i <= iter->config[1]; ++i)
+		{
+			strTmp.clear();
+			memset(buffidx, 0, 120);
+			sprintf_s(buffidx, 120, "%07lu,", i);
+			strTmp.append(buffidx, 8);
+			sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
+			of.write(buff, strTmp.size());
 
-		strTmp.clear();
-		memset(buff, 0, MAX_BUFF_SIZE);
-		generateKey(i, strTmp);
-		sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
-		of.write(buff, strTmp.size());
+			strTmp.clear();
+			memset(buff, 0, MAX_BUFF_SIZE);
+			generateKey(i, strTmp);
+			sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
+			of.write(buff, strTmp.size());
 
-		strTmp.clear();
-		memset(buffidx, 0, 120);
-		sprintf_s(buffidx, 120, ",%07lu", getGiftID(i));
-		strTmp.append(buffidx, 8);
-		sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
-		of.write(buff, strTmp.size());
+			strTmp.clear();
+			memset(buffidx, 0, 120);
+			sprintf_s(buffidx, 120, ",%07lu", getGiftID(i));
+			strTmp.append(buffidx, 8);
+			sprintf_s(buff, MAX_BUFF_SIZE, strTmp.c_str());
+			of.write(buff, strTmp.size());
 
-		memset(buff, 0, MAX_BUFF_SIZE);
-		sprintf_s(buff, MAX_BUFF_SIZE, "\r\n");
-		of.write(buff, 1);
+			memset(buff, 0, MAX_BUFF_SIZE);
+			sprintf_s(buff, MAX_BUFF_SIZE, "\r\n");
+			of.write(buff, 1);
+		}
 	}
-
 	of.close();
 	return 0;
 }
-*/

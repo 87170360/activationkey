@@ -13,17 +13,11 @@ Description:产生激活码
 #include <stdlib.h>
 #include <assert.h>
 #include <map>
+#include "readfile.h"
 
 using namespace std;
 
 typedef unsigned int UINT32;
-
-//1 分配激活码范围
-//2 设置礼包ID
-//3 已使用 1-9675
-
-const UINT32 KEY_BEGIN(9696);
-const UINT32 KEY_END(9705);
 
 const UINT32 RAND_SIZE(12);
 UINT32 ONE((unsigned)time(NULL));
@@ -60,11 +54,15 @@ UINT32 getGiftID(UINT32 index)
 	return 0;
 }
 
-void initGiftID(void)
+void initGiftID(const std::vector<ReadData>& config_data)
 {
-	for (UINT32 i = KEY_BEGIN; i <= KEY_END; ++i)
+
+	for(std::vector<ReadData>::const_iterator iter = config_data.begin(); iter != config_data.end(); ++iter)
 	{
-		GiftMap[i] = 2520;
+		for (UINT32 i = iter->config[0]; i <= iter->config[1]; ++i)
+		{
+			GiftMap[i] = iter->config[2];
+		}
 	}
 }
 

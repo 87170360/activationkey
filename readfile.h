@@ -87,5 +87,57 @@ std::vector<std::string> split(std::string str,std::string pattern)
     return result;
 }
 
+struct ReadData
+{
+	ReadData(void)
+	{
+		memset(config, 0, sizeof(config) / sizeof(unsigned int));
+	}
+	unsigned int config[3];
+
+};
+
+ReadData splitToInt(std::string str,std::string pattern)
+{
+    std::string::size_type pos;
+    ReadData result;
+    str += pattern;//扩展字符串以方便操作
+    size_t size = str.size();
+
+	int tmp(0);
+    for(size_t i = 0; i < size; i++)
+    {
+        pos=str.find(pattern,i);
+        if(pos < size && tmp < 3)
+        {		
+            std::string s = str.substr(i, pos - i);
+            result.config[tmp++] = atoi(s.c_str());
+            i = pos+pattern.size() - 1;
+        }
+    }
+    return result;
+}
+
+
 //parse
+std::vector<ReadData> parseInputFile(void)
+{
+	string filename = "data.txt";  
+    ifstream fin( filename.c_str());  
+    if(!fin) 
+    {   
+        cout << "Error opening " << filename << " for input" << endl;   
+        exit(-1);  
+    }
+	 
+	std::vector<ReadData> result;
+	string s;  
+    while(getline(fin,s))
+    {    
+        cout << "Read from file: " << s << endl; 
+		result.push_back(splitToInt(s, "-"));
+    }
+
+	return result;
+}
 
