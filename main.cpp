@@ -15,16 +15,6 @@ Description:²úÉú¼¤»îÂë
 using namespace std;
 const UINT32 MAX_BUFF_SIZE(1024);
 
-/*
-int main(int argc, char* argv[])
-{
-	std::vector<ReadData> m_config;
-	m_config = parseInputFile();
-    return 0;
-}
-*/
-
-
 int main(int argc, char* argv[])
 {
 	std::vector<ReadData> m_config;
