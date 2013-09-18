@@ -1,3 +1,10 @@
+/*************************************************
+Copyright liushuxin. All rights reserved.
+Author: liushuxin, linux.book.heart@gmail.com
+Date:2013-09-18
+Description:²úÉú¼¤»îÂë
+**************************************************/
+
 #include <iostream>
 #include <fstream>
 #include <string>

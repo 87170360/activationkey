@@ -1,3 +1,10 @@
+/*************************************************
+Copyright liushuxin. All rights reserved.
+Author: liushuxin, linux.book.heart@gmail.com
+Date:2013-09-18
+Description:²úÉú¼¤»îÂë
+**************************************************/
+
 #ifndef __RANDOM_LSX_H__
 #define __RANDOM_LSX_H__
 
