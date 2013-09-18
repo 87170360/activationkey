@@ -11,10 +11,29 @@ Description:产生激活码
 #include <time.h>
 
 #include "randomkey.h"
+#include "readfile.h"
 
 using namespace std;
 const UINT32 MAX_BUFF_SIZE(1024);
 
+
+int main(int argc, char* argv[])
+{
+	ReadDataFromFileWBW(); //逐词读入字符串 
+    OutPutAnEmptyLine(); //输出空行
+
+    ReadDataFromFileLBLIntoCharArray(); //逐词读入字符数组
+    OutPutAnEmptyLine(); //输出空行
+
+    ReadDataFromFileLBLIntoString(); //逐词读入字符串
+    OutPutAnEmptyLine(); //输出空行
+
+    ReadDataWithErrChecking(); //带检测的读取
+    return 0;
+}
+
+
+/*
 int main(int argc, char* argv[])
 {
 	char buff[MAX_BUFF_SIZE] = {0};
@@ -76,3 +95,4 @@ int main(int argc, char* argv[])
 	of.close();
 	return 0;
 }
+*/
